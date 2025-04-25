@@ -1,0 +1,157 @@
+{
+  "name": "Recordatorio tareas pendientes",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        -40
+      ],
+      "id": "50270c7c-85ad-4fa2-b185-58ac2512e6e7",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1F3I6mlr_Dd1QX8398vQFdu0QCSU25bS_i5cUcoijfUs",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1F3I6mlr_Dd1QX8398vQFdu0QCSU25bS_i5cUcoijfUs/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Terminada",
+              "lookupValue": "No"
+            }
+          ]
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRangeA1",
+              "range": "A1:E"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        160,
+        40
+      ],
+      "id": "cb4418bd-0bad-4ba7-85aa-541dca313a84",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "eIhEF65uTRSBoNBc",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{$json[\"Correo\"]}}",
+        "subject": "=Recordatorio de tareas pendientes: {{$json[\"Tarea\"]}}",
+        "emailType": "text",
+        "message": "=Hola {{$json[\"Responsable\"]}}, tienes tareas pendientes:\n\n📌 Tarea: {{$json[\"Tarea\"]}}   \n📅 Fecha límite: {{$json[\"Fecha límite\"]}}   \n\n¡No olvides marcarla como terminada!",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        40
+      ],
+      "id": "f0be9da0-6336-4685-b60d-733188a45b4e",
+      "name": "Gmail",
+      "webhookId": "4d3ac48e-0282-487e-a33a-27c776236103",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "xlGGwI8GJzqL8f8F",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {},
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -60,
+        160
+      ],
+      "id": "ad11a29c-7c42-44e7-b129-262949a4863f",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        []
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "9620acec-cd5f-4467-ac8a-98f8bba0a4d8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "727da8aabf95ccc86c989eb82544bea8d34ec8bfbb1877fd530d5bea8cb2fe1a"
+  },
+  "id": "IZwX79i2ljD3neTf",
+  "tags": []
+}
